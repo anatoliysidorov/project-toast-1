@@ -32,10 +32,17 @@ function Toast({ id, message, variant, handleDismiss }) {
       <div className={styles.iconContainer}>
         <IconCmp icon={ICONS_BY_VARIANT[variant]} />
       </div>
-      <p className={styles.content}>{message}</p>
-      <button className={styles.closeButton} onClick={(_) => handleDismiss(id)}>
+      <p className={styles.content}>
+        <VisuallyHidden>{variant} </VisuallyHidden>
+        {message}
+      </p>
+      <button
+        className={styles.closeButton}
+        onClick={(_) => handleDismiss(id)}
+        aria-label="Dismiss message"
+        aria-live="off"
+      >
         <IconCmp icon={X} />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );

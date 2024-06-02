@@ -6,9 +6,12 @@ function ToastProvider({ children }) {
   const [toasts, setToasts] = React.useState([]);
 
   function removeItem(id) {
-    const newArr = [...toasts].filter((toast) => {
-      return toast.id !== id;
-    });
+    const newArr =
+      id < 0
+        ? []
+        : [...toasts].filter((toast) => {
+            return toast.id !== id;
+          });
     setToasts(newArr);
   }
 
