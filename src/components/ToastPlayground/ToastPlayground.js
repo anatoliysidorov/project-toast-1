@@ -4,68 +4,22 @@ import Button from "../Button";
 
 import styles from "./ToastPlayground.module.css";
 
-import Toast from "../Toast";
 import ToastShelf from "../ToastShelf";
 
+import { ToastContext } from "../ToastProvider/ToastProvider";
+
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
-
-function useToggle(initialValue = false) {
-  if (typeof initialValue !== "boolean") {
-    console.warn("Invalid type for useToggle");
-  }
-
-  const [value, setValue] = React.useState(initialValue);
-
-  const toggleValue = React.useCallback(() => {
-    setValue((currentValue) => !currentValue);
-  }, []);
-
-  return [value, toggleValue];
-}
 
 function ToastPlayground() {
   const [message, setMessage] = React.useState("test");
   const [variant, setVariant] = React.useState("notice");
 
-  const [toasts, setToasts] = React.useState([]);
-
-  function removeItem(id) {
-    const newArr = [...toasts].filter((toast) => {
-      return toast.id !== id;
-    });
-    setToasts(newArr);
-  }
-
-  function pushToast() {
-    const newArr = [...toasts];
-    newArr.push({
-      id: crypto.randomUUID(),
-      message: message,
-      variant: variant,
-    });
-    setToasts(newArr);
-  }
+  const { pushItem } = React.useContext(ToastContext);
 
   function submitForm(e) {
     e.preventDefault();
-    pushToast();
+    pushItem(variant, message);
   }
-
-  /*
-  React.useEffect(() => {
-    function handleEscape(event) {
-      if (event.code === "Escape" && isModalOpen) {
-        toggleIsModalOpen();
-      }
-    }
-
-    window.addEventListener("keydown", handleEscape);
-
-    return () => {
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, [isModalOpen, toggleIsModalOpen]);
-  */
 
   return (
     <div className={styles.wrapper}>
@@ -73,7 +27,7 @@ function ToastPlayground() {
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
-      <ToastShelf toastList={toasts} removeItem={removeItem} />
+      <ToastShelf />
 
       <form className={styles.controlsWrapper} onSubmit={submitForm}>
         <div className={styles.row}>
