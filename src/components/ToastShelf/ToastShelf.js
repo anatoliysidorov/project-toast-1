@@ -7,20 +7,6 @@ import { ToastContext } from "../ToastProvider/ToastProvider";
 function ToastShelf() {
   const { toasts, removeItem } = React.useContext(ToastContext);
 
-  React.useEffect(() => {
-    function handleEscape(event) {
-      if (event?.code === "Escape") {
-        removeItem(-1);
-      }
-    }
-
-    window.addEventListener("keydown", handleEscape);
-
-    return () => {
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, []);
-
   return (
     <ol
       className={styles.wrapper}
